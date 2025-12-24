@@ -81,12 +81,12 @@ export interface Reveal {
 
 /**
  * Represents a single item in the linear rendering model.
- * Can be a block, a choice button, or a reveal container.
+ * Can be a block or a choice button.
+ * Note: Reveals are stored separately and rendered inline with buttons, not as standalone items.
  */
 export type RenderItem =
   | { type: 'block'; data: Block }
-  | { type: 'choice'; data: Choice; blockId: BlockId }
-  | { type: 'reveal'; data: Reveal };
+  | { type: 'choice'; data: Choice; blockId: BlockId };
 
 /**
  * Callback function invoked when a choice is activated.

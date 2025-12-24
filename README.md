@@ -181,20 +181,27 @@ const question: Block = {
     {
       choiceId: 'a',
       label: 'A) London',
-      directionality: 'in-n-out',
+      directionality: 'out',
       reveal: true,
       hiddenContent: 'Incorrect. London is the capital of England.',
     },
     {
       choiceId: 'c',
       label: 'C) Paris',
-      directionality: 'in-n-out',
+      directionality: 'out',
       reveal: true,
       hiddenContent: 'Correct! Paris is the capital of France.',
     },
   ],
 };
 ```
+
+For **MCQs**, it's generally best to:
+
+- Use **`directionality: 'out'`** with **`reveal: true`**  
+  - Feedback comes from `hiddenContent` only  
+  - No extra LLM calls on button click (cheaper, faster, deterministic)
+- Reserve **`'in'` / `'in-n-out'`** for flows where you truly need the model to react to the click (e.g. follow‑up tutoring, story branching).
 
 ### Roleplay with Local Descriptions
 
@@ -247,10 +254,56 @@ Quint includes base CSS classes. Import the default styles:
 import 'quint/dist/styles.css';
 ```
 
-Or customize using the provided class names:
+### CSS Class Overrides
+
+You can override styles using the provided class names:
 
 - `.quint-container` - Main container
 - `.quint-block` - Content block
+- `.quint-block-content` - Block text content
+- `.quint-choices` - Choices container
+- `.quint-choice-button` - Individual choice buttons
+- `.quint-reveal-container` - Reveal container
+- `.quint-reveal-toggle` - Reveal toggle button
+- `.quint-reveal-content` - Reveal content area
+- `.quint-reveal-text` - Reveal text content
+
+### Style and className Props
+
+All components support standard React `className` and `style` props for customization:
+
+```tsx
+import { BlockRenderer, ChoiceButton, QuintRenderer } from 'quint';
+
+// Customize block styling
+<BlockRenderer
+  block={myBlock}
+  className="my-custom-block"
+  style={{ background: '#f0f0f0', borderRadius: '20px' }}
+  contentClassName="my-content"
+  choicesClassName="my-choices"
+/>
+
+// Customize button styling
+<ChoiceButton
+  choice={myChoice}
+  blockId="block-1"
+  className="my-button"
+  style={{ 
+    background: 'linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%)',
+    color: 'white',
+    fontWeight: 'bold'
+  }}
+/>
+
+// Customize container
+<QuintRenderer
+  className="my-container"
+  style={{ padding: '2rem' }}
+/>
+```
+
+The props merge with default styles, so you can override specific properties while keeping others.
 - `.quint-choice-button` - Choice button
 - `.quint-reveal-container` - Reveal container
 - `.quint-reveal-content` - Reveal content area

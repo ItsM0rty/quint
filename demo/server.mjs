@@ -122,7 +122,8 @@ IMPORTANT:
 - Emit exactly ONE block per message, and place it directly after the start delimiter.
 - Do NOT stream partial JSON; send the full block once ready.
 - Use unique blockId values
-- For MCQs, use "in-n-out" with reveal: true for immediate feedback
+- For MCQs, prefer "out" with reveal: true so explanations come from hiddenContent only (no extra LLM calls on click)
+- Reserve "in" / "in-n-out" for flows where the click truly needs a new LLM response (e.g. tutoring follow-ups, branching stories)
 - You can also provide regular text responses without Quint blocks`;
 
     // Manually convert UIMessages to CoreMessages

@@ -47,15 +47,10 @@ export class QuintState {
       return null;
     }
 
-    // If reveal is enabled, create or update the reveal
+    // If reveal is enabled, create or update the reveal (stored in Map, not in items array)
+    // Reveals are only rendered inline with buttons, not as standalone items
     if (choice.reveal) {
       const revealId = `${blockId}:${choiceId}`;
-      const existingRevealIndex = this.items.findIndex(
-        (item) =>
-          item.type === 'reveal' &&
-          item.data.blockId === blockId &&
-          item.data.choiceId === choiceId
-      );
 
       const reveal: Reveal = {
         revealId,
@@ -67,18 +62,6 @@ export class QuintState {
       };
 
       this.reveals.set(revealId, reveal);
-
-      if (existingRevealIndex === -1) {
-        // Insert reveal immediately after the choice
-        this.items.splice(choiceIndex + 1, 0, {
-          type: 'reveal',
-          data: reveal,
-        });
-      } else {
-        // Update existing reveal
-        this.items[existingRevealIndex] = { type: 'reveal', data: reveal };
-      }
-
       return revealId;
     }
 
@@ -96,15 +79,7 @@ export class QuintState {
     if (!reveal) return;
 
     reveal.generatedContent = generatedContent;
-
-    // Update the item in the array
-    const revealIndex = this.items.findIndex(
-      (item) => item.type === 'reveal' && item.data.revealId === revealId
-    );
-
-    if (revealIndex !== -1) {
-      this.items[revealIndex] = { type: 'reveal', data: reveal };
-    }
+    // Reveals are stored in Map, not in items array
   }
 
   /**
@@ -115,15 +90,7 @@ export class QuintState {
     if (!reveal) return;
 
     reveal.expanded = !reveal.expanded;
-
-    // Update the item in the array
-    const revealIndex = this.items.findIndex(
-      (item) => item.type === 'reveal' && item.data.revealId === revealId
-    );
-
-    if (revealIndex !== -1) {
-      this.items[revealIndex] = { type: 'reveal', data: reveal };
-    }
+    // Reveals are stored in Map, not in items array
   }
 
   /**
@@ -134,15 +101,7 @@ export class QuintState {
     if (!reveal) return;
 
     reveal.nestedBlocks = blocks;
-
-    // Update the item in the array
-    const revealIndex = this.items.findIndex(
-      (item) => item.type === 'reveal' && item.data.revealId === revealId
-    );
-
-    if (revealIndex !== -1) {
-      this.items[revealIndex] = { type: 'reveal', data: reveal };
-    }
+    // Reveals are stored in Map, not in items array
   }
 
   /**
